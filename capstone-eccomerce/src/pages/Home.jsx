@@ -10,6 +10,7 @@ export const Home = ({products}) => {
           <div className="card-body text-center">
             <h5 className="card-title">{products.title}</h5>
             <p className="lead">${products.price}</p>
+            <img src={products.image} className="card-img-top" style={{width: "88px"}} alt={products.title}/>
             <Link to={`/`} onClick={() => console.log("hello")}> Buy Now </Link>
           </div>
         </div>
