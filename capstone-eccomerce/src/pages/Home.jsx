@@ -1,6 +1,6 @@
 import  React from "react";
 import { Navbar } from '../components/Navbar'
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export const Home = ({products}) => {
     console.log("products", products)
@@ -10,8 +10,7 @@ export const Home = ({products}) => {
           <div className="card-body text-center">
             <h5 className="card-title">{products.title}</h5>
             <p className="lead">${products.price}</p>
-            <button onClick={() => console.log("hello")}> Click me </button>
-            {/* <Link to={`/products`} onClick={() => console.log("hello")}> Buy Now </Link> */}
+            <Link to={`/`} onClick={() => console.log("hello")}> Buy Now </Link>
           </div>
         </div>
         );
