@@ -6,7 +6,7 @@ export const Home = ({products}) => {
     console.log("products", products)
     const cardItem = (products) => {
         return (
-          <div className="card my-5 py-4" key={products.id} style={{width: "18rem"}}>
+          <div className="" key={products.id} style={{width: "18rem"}}>
           <div className="card-body text-center">
             <h5 className="card-title">{products.title}</h5>
             <p className="lead">${products.price}</p>
