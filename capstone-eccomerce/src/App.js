@@ -1,11 +1,13 @@
 import { React, useState, useEffect } from "react";
 import { Home } from './pages/Home';
+import { ProductDetail } from "./pages/ProductDetail";
 import { Route, Routes } from "react-router-dom";
 import './App.css';
 import { LogIn } from './pages/LogIn';
 
 function App() {
   const [products, setProducts] = useState([]);
+  const [currentProduct, setCurrentProduct] = useState({});
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then(res => res.json())
@@ -15,6 +17,7 @@ function App() {
       });
   }, []);
   console.log("products", products)
+  const handleOnProduct = (product) => setCurrentProduct({ ...product });
   return (
     <div className="App">
      <Routes>
@@ -22,7 +25,14 @@ function App() {
             exact
             path="/"
             element={
-              <Home products={products}/>
+              <Home products={products} handleOnProduct={handleOnProduct}/>
+            }
+          />
+            <Route
+            exact
+            path="/productDetail/:id"
+            element={
+              <ProductDetail currentProduct={currentProduct}/>
             }
           />
              <Route
