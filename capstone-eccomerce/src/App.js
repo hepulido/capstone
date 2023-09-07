@@ -1,6 +1,7 @@
 import { React, useState, useEffect } from "react";
 import { Home } from './pages/Home';
 import { ProductDetail } from "./pages/ProductDetail";
+import { SignIn } from "./pages/SignIn";
 import { Route, Routes } from "react-router-dom";
 import './App.css';
 import { LogIn } from './pages/LogIn';
@@ -40,6 +41,13 @@ function App() {
             path="/logIn"
             element={
               <LogIn/>
+            }
+          />
+           <Route
+            exact
+            path="/signIn"
+            element={
+              <SignIn/>
             }
           />
       </Routes>
