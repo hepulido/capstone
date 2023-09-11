@@ -85,16 +85,20 @@ export const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-        <Link to= "/about" style={{textDecoration:"none"}} >
+        <Link to= "/" style={{textDecoration:"none"}} >
           <Logo>CAPSTONE STORE</Logo>
           </Link>
         </Center>
         <Right>
           <MenuItem>ABOUT</MenuItem>
-          <MenuItem>REGISTER</MenuItem>
+          <Link to="/LogIn" style={{textDecoration:"none"}}>
+          <MenuItem>LOG IN</MenuItem>
+          </Link>
+          <Link to="/SignIn" style={{textDecoration:"none"}}>
           <MenuItem>SIGN IN</MenuItem>
+          </Link>
           <MenuItem>
-          <ShoppingCartIcon />
+          <ShoppingCartIcon /> 
           </MenuItem>
         </Right>
       </Wrapper>
