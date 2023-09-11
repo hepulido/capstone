@@ -98,7 +98,7 @@ export const Navbar = () => {
           <MenuItem>SIGN IN</MenuItem>
           </Link>
           <MenuItem>
-          <ShoppingCartIcon />
+          <ShoppingCartIcon /> 
           </MenuItem>
         </Right>
       </Wrapper>
