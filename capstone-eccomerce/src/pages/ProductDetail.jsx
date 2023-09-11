@@ -1,34 +1,36 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
+import { CartContext } from "../CartContext";
 
 export  function ProductDetail({ currentProduct }) {
   const [cartBtn, setCartBtn] = useState("Add to Cart");
+  const { cartProducts, setCartProducts } = useContext(CartContext);
  console.log("currentProduct", currentProduct)
 
   const handlePostCart = async (product) => {
-    // const newCartProducts = [ product];
+    const newCartProducts = [...cartProducts, product];
     if (cartBtn === "Add to Cart") {
       setCartBtn("Remove from Cart");
     } else {
       setCartBtn("Add to Cart");
     }
 
-    // await fetch("/show-add-cart", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
+    await fetch('https://fakestoreapi.com/carts', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
 
-    //   body: JSON.stringify({
-    //     newCartProducts,
-    //   }),
-    // }).then((r) => {
-    //   if (r.ok) {
-    //     setCartProducts(newCartProducts)
-    //   } else {
-    //     r.json().then((err) => console.error(err));
-    //   }
-    // });
+      body: JSON.stringify({
+        newCartProducts,
+      }),
+    }).then((r) => {
+      if (r.ok) {
+        setCartProducts(newCartProducts)
+      } else {
+        r.json().then((err) => console.error(err));
+      }
+    });
   };
 
   return (
