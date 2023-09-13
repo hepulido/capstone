@@ -2,6 +2,7 @@ import { React, useState, useEffect } from "react";
 import { Home } from './pages/Home';
 import { ProductDetail } from "./pages/ProductDetail";
 import { SignIn } from "./pages/SignIn";
+import { Cart } from "./pages/Cart";
 import { Route, Routes } from "react-router-dom";
 import './App.css';
 import { LogIn } from './pages/LogIn';
@@ -48,6 +49,11 @@ function App() {
       }
     });
   }, []);
+
+  let deleteProductCart = (productId) => {
+    let deleted = cartProducts.filter((product) => product.id !== productId);
+    setCartProducts(deleted);
+  };
   
   const handleOnProduct = (product) => setCurrentProduct({ ...product });
   return (
@@ -82,6 +88,17 @@ function App() {
             path="/signIn"
             element={
               <SignIn/>
+            }
+          />
+            <Route
+            exact
+            path="/cart"
+            element={
+              <Cart
+                products={products}
+                currentProduct={currentProduct}
+                handleDeleted={deleteProductCart}
+              />
             }
           />
       </Routes>
