@@ -1,7 +1,7 @@
 import {React, useState} from "react";
 import { useNavigate } from 'react-router'
 import { Alert } from "react-bootstrap";
-export function LogIn({ handleLogout }) {
+export function LogIn({ handleLogout, user }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([])
@@ -10,18 +10,13 @@ export function LogIn({ handleLogout }) {
   
   function handleSubmit(e) {
     e.preventDefault();
-    fetch("/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password}),
-    })
+    fetch("https://fakestoreapi.com/users")
       .then((r) => {
         if(r.ok){
           r.json().then((user) => {
         //   setUser(user)
           user? navigate('/') : navigate('/cart')
+          console.log("users:", user )
         })
       } else {
         r.json().then((err) => setErrors(err.errors))

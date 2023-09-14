@@ -14,7 +14,7 @@ function App() {
   const [cartProducts, setCartProducts] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
-
+  
   useEffect(() => {
     fetch("https://fakestoreapi.com/products")
       .then(res => res.json())
@@ -80,7 +80,7 @@ function App() {
             exact
             path="/logIn"
             element={
-              <LogIn/>
+              <LogIn user={user}/>
             }
           />
            <Route

@@ -14,7 +14,7 @@ export  function SignIn({onLogin}) {
   
   function handleSubmit(e) {
     e.preventDefault();
-    fetch("/signup", {
+    fetch('https://fakestoreapi.com/users', {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -22,7 +22,7 @@ export  function SignIn({onLogin}) {
       body: JSON.stringify({
         first_name: firstName,
         last_name: lastName,
-        username,
+        username: username,
         password,
         password_confirmation: passwordConfirmation,
         email,
