@@ -1,28 +1,37 @@
-import {React, useState} from "react";
-import { useNavigate } from 'react-router'
+import { React, useState, useContext } from "react";
+import { useNavigate } from "react-router";
 import { Alert } from "react-bootstrap";
-export function LogIn({ handleLogout, user }) {
+import { CartContext } from "../CartContext";
+export function LogIn({ handleLogout }) {
+  const { user, setUser } = useContext(CartContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([])
-  let navigate = useNavigate()
-  
-  
+  const [errors, setErrors] = useState([]);
+  let navigate = useNavigate();
+
   function handleSubmit(e) {
     e.preventDefault();
-    fetch("https://fakestoreapi.com/users")
-      .then((r) => {
-        if(r.ok){
-          r.json().then((user) => {
-        //   setUser(user)
-          user? navigate('/') : navigate('/cart')
-          console.log("users:", user )
-        })
+    fetch("https://fakestoreapi.com/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: email,
+        password: password,
+      }),
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then((user) => {
+          setUser(user);
+          user ? navigate("/") : navigate("/cart");
+        });
       } else {
-        r.json().then((err) => setErrors(err.errors))
+        r.json().then((err) => setErrors(err.errors));
       }
-    })
+    });
   }
+
   return (
     <>
       {/* <!-- Button trigger modal --> */}
@@ -32,7 +41,7 @@ export function LogIn({ handleLogout, user }) {
         data-bs-toggle="modal"
         data-bs-target="#loginModal"
       >
-       <span className="fa-solid fa-user-plus me-1"></span> Login
+        <span className="fa-solid fa-user-plus me-1"></span> Login
       </button>
 
       {/* <!-- Modal --> */}
@@ -47,7 +56,8 @@ export function LogIn({ handleLogout, user }) {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-              <span className="fa fa-arrow-right-to-bracket me-1"></span> Login
+                <span className="fa fa-arrow-right-to-bracket me-1"></span>{" "}
+                Login
               </h5>
               <button
                 type="button"
@@ -57,16 +67,16 @@ export function LogIn({ handleLogout, user }) {
               ></button>
             </div>
             <div className="modal-body">
-            <button className= "btn btn-outline-primary w-100 mb-4">
-             <span className="fa fa-google me-2"></span> Sign in With Google 
-            </button>
+              <button className="btn btn-outline-primary w-100 mb-4">
+                <span className="fa fa-google me-2"></span> Sign in With Google
+              </button>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
                     email
                   </label>
                   <input
-                   className="form-control"
+                    className="form-control"
                     type="text"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -103,11 +113,11 @@ export function LogIn({ handleLogout, user }) {
               </form>
             </div>
             <div>
-            {errors.map((error) => (
-              <Alert variant="primary" key={error}>
-               {error}
-              </Alert>
-            ))}
+              {errors.map((error) => (
+                <Alert variant="primary" key={error}>
+                  {error}
+                </Alert>
+              ))}
             </div>
           </div>
         </div>

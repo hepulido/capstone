@@ -1,11 +1,12 @@
 import { React, useState, useEffect } from "react";
-import { Home } from './pages/Home';
+import { Home } from "./pages/Home";
 import { ProductDetail } from "./pages/ProductDetail";
-import { SignIn } from "./pages/SignIn";
+import { SignUp } from "./pages/SignUp";
 import { Cart } from "./pages/Cart";
+import { Checkout } from "./pages/Checkout";
 import { Route, Routes } from "react-router-dom";
-import './App.css';
-import { LogIn } from './pages/LogIn';
+import "./App.css";
+import { LogIn } from "./pages/LogIn";
 import { CartContext } from "./CartContext";
 
 function App() {
@@ -14,83 +15,42 @@ function App() {
   const [cartProducts, setCartProducts] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
-  
+
   useEffect(() => {
-    fetch("https://fakestoreapi.com/products")
-      .then(res => res.json())
+    fetch('https://fakestoreapi.com/products')
+      .then((res) => res.json())
       .then((productsArr) => {
-        console.log(productsArr)
         setProducts([...productsArr]);
       });
   }, []);
-  
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/users').then((response) => {
-      if (response.ok) {
-        response.json().then((user) => {
-          setUser(user);
-          console.log(user, "user1")
-        });
-      } else {
-        response.json().then((err) => console.error(err));
-      }
-    });
-  }, []);
-  
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/carts').then((response) => {
-      if (response.ok) {
-        response.json().then((cart) => {
-          setCartProducts(cart);
-          console.log(cart, "cart1")
-        });
-      } else {
-        response.json().then((err) => console.error(err));
-      }
-    });
-  }, []);
-
+console.log(products)
   let deleteProductCart = (productId) => {
     let deleted = cartProducts.filter((product) => product.id !== productId);
     setCartProducts(deleted);
   };
-  
+
   const handleOnProduct = (product) => setCurrentProduct({ ...product });
   return (
     <div className="App">
       <CartContext.Provider
         value={{ cartProducts, setCartProducts, user, setUser, cart, setCart }}
       >
-     <Routes>
+        <Routes>
           <Route
             exact
             path="/"
             element={
-              <Home products={products} handleOnProduct={handleOnProduct}/>
+              <Home products={products} handleOnProduct={handleOnProduct} />
             }
           />
-            <Route
+          <Route
             exact
             path="/productDetail/:id"
-            element={
-              <ProductDetail currentProduct={currentProduct}/>
-            }
+            element={<ProductDetail currentProduct={currentProduct} />}
           />
-             <Route
-            exact
-            path="/logIn"
-            element={
-              <LogIn user={user}/>
-            }
-          />
-           <Route
-            exact
-            path="/signIn"
-            element={
-              <SignIn/>
-            }
-          />
-            <Route
+          <Route exact path="/logIn" element={<LogIn user={user} />} />
+          <Route exact path="/signIn" element={<SignUp />} />
+          <Route
             exact
             path="/cart"
             element={
@@ -101,7 +61,17 @@ function App() {
               />
             }
           />
-      </Routes>
+          <Route
+            exact
+            path="/checkout"
+            element={
+              <Checkout
+                products={products}
+                currentProduct={currentProduct}
+              />
+            }
+          />
+        </Routes>
       </CartContext.Provider>
     </div>
   );

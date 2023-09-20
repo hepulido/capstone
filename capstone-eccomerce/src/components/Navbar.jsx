@@ -1,6 +1,6 @@
 // import BadgeIcon from '@mui/icons-material/Badge';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -8,8 +8,8 @@ import { mobile } from "../responsive";
 
 const Container = styled.div`
   height: 60px;
-  margin-bottom:80px;
- 
+  margin-bottom: 80px;
+
   ${mobile({ height: "50px" })}
 `;
 
@@ -85,26 +85,25 @@ export const Navbar = () => {
           </SearchContainer>
         </Left>
         <Center>
-        <Link to= "/" style={{textDecoration:"none"}} >
-          <Logo>CAPSTONE STORE</Logo>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Logo>CAPSTONE STORE</Logo>
           </Link>
         </Center>
         <Right>
           <MenuItem>ABOUT</MenuItem>
-          <Link to="/LogIn" style={{textDecoration:"none"}}>
-          <MenuItem>LOG IN</MenuItem>
+          <Link to="/LogIn" style={{ textDecoration: "none" }}>
+            <MenuItem>LOG IN</MenuItem>
           </Link>
-          <Link to="/SignIn" style={{textDecoration:"none"}}>
-          <MenuItem>SIGN IN</MenuItem>
+          <Link to="/SignIn" style={{ textDecoration: "none" }}>
+            <MenuItem>SIGN IN</MenuItem>
           </Link>
           <MenuItem>
-          <Link to="/Cart" style={{textDecoration:"none"}}>
-          <ShoppingCartIcon /> 
-          </Link>
+            <Link to="/Cart" style={{ textDecoration: "none" }}>
+              <ShoppingCartIcon />
+            </Link>
           </MenuItem>
         </Right>
       </Wrapper>
     </Container>
   );
 };
-

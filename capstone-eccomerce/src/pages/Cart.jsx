@@ -1,57 +1,108 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert } from "react-bootstrap";
-
 import { CartContext } from "../CartContext";
+import { Navbar } from "../components/Navbar";
+import styled from "styled-components";
 
-export  function Cart({ products, handleDeleted }) {
+const ContainerDeatailCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+`;
+const TitleDeatailCard = styled.div`
+max-width:750px
+ font-size: 26px;
+`;
+const ProductDesc = styled.div`
+  font-size: 20px;
+  max-width: 750px;
+  margin: 15px auto;
+  font-weight: 400;
+`;
+const PriceProduct = styled.div`
+  font-size: 24px;
+  font-weight: 700;
+`;
+const WrapperButton = styled.div`
+  display: flex;
+`;
+const ButtonCard = styled.div`
+  color: white;
+  background: #00c3ff;
+  font-weight: 500;
+  font-size: 1em;
+  margin: 1em 0.25em;
+  padding: 0.25em 1em;
+  border: 2px solid #00c3ff;
+  border-radius: 3px;
+`;
+export function Cart({ products, handleDeleted }) {
   const { cartProducts, setCartProducts } = useContext(CartContext);
   const { user } = useContext(CartContext);
-  let {id, quantity} = products;
-  
+  const { cart } = useContext(CartContext);
+  const { currentUser, setCurrentUser } = useState(user);
+
+  // let { id } = user;
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/carts/user").then((response) => {
+      if (response.ok) {
+        response
+          .json()
+          .then
+          // (cart) => {
+          // setCartProducts(cart);
+          ();
+      } else {
+        response.json().then((err) => console.error(err));
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/users")
+      .then((res) => res.json())
+      .then((json) => console.log(json));
+  }, []);
+
   let handleUpdate = async (product) => {
     const newCartProducts = cartProducts.map((item) => {
-      return item.id === product.id ? product : item
-    })
-    setCartProducts(newCartProducts)
-    await fetch(`https://fakestoreapi.com/carts/user/${id}`, {
+      return item.id === product.id ? product : item;
+    });
+    setCartProducts(newCartProducts);
+    await fetch("https://fakestoreapi.com/carts/user", {
       method: "PATCH",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
         newCartProducts,
-        quantity: quantity
       }),
-    })
-      .then((res) => res.json())
-     
+    }).then((res) => res.json());
   };
 
   let handleDeleteProduct = async (product) => {
     const newCartProducts = cartProducts.filter((item) => {
       return item.id !== product.id;
-    })
-      await fetch(`https://fakestoreapi.com/carts/${id}`, {
+    });
+    await fetch("https://fakestoreapi.com/carts", {
       method: "PATCH",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-       newCartProducts,
-       
+        newCartProducts,
       }),
-      
-    })
-    setCartProducts(newCartProducts)
-      
+    });
+    setCartProducts(newCartProducts);
   };
 
-
-
   let handleDelete = (products) => {
-    products.splice(0, products.length)
-    fetch(`https://fakestoreapi.com/carts/${id}`, {
+    products.splice(0, products.length);
+    fetch("https://fakestoreapi.com/carts", {
       method: "DELETE",
     })
       .then((res) => res.json())
@@ -69,69 +120,69 @@ export  function Cart({ products, handleDeleted }) {
       body: JSON.stringify({ newCartProducts }),
     }).then((r) => {
       if (r.ok) {
-        setCartProducts(newCartProducts)
+        setCartProducts(newCartProducts);
       } else {
         r.json().then((err) => console.error(err));
       }
     });
   };
- 
+
   const total = cartProducts.reduce(function (acc, obj) {
     return acc + obj.price;
   }, 0);
- 
-  let count = 0
+
+  let count = 0;
   const cartItems = (cartItem, i) => {
     return (
-      <div key={i} className="container my-5 py-3">
-        <div className="row">
-          <div className="col-md-6 d-flex justify-content-center mx-auto product">
-            <img src={cartItem.image} alt={cartItem.title} height="300px" />
-          </div>
-          <div className="col-md-6 d-flex flex-column justify-content-center">
-            <h1 className="display-5 fw-bold">{cartItem.title}</h1>
-            <hr />
-            <p className="lead">{cartItem.description}</p>
-            <h2 className="my-4">${cartItem.price}</h2>
-            <h4>
-              <span>Quantity: {count} </span>
-            </h4>
-            <div className="d-grid gap-2 col-6 d-md-flex ">
-              <button
-                className="btn btn-outline-primary btn-sm"
-                onClick={() => {
-                  count++
-                  handleUpdate(cartItem);
-                }}
-              >
-                +
-              </button>
-              <button
-                className="btn btn-outline-primary btn-sm"
-                onClick={() => {
-                  if (cartItem.quantity > 0){
-                    count--
-                    handleUpdate(cartItem ) 
-                  }
-                 }}
-              >
-                -
-              </button>
-            </div>
-            <button
-          onClick={() => {
-           handleDeleteProduct(cartItem);
-            }}
-          className="btn-close"
-          aria-label="close"
-          style={{"margin-top": "10px"}}
-        >Delete Product</button>
-          </div>
+      <ContainerDeatailCard key={i}>
+        <TitleDeatailCard>
+          <h1>{cartItem.title}</h1>
+        </TitleDeatailCard>
+        <div>
+          <img
+            src={cartItem.image}
+            alt={cartItem.title}
+            width="250"
+            height="300px"
+          />
         </div>
-      </div>
+        <ProductDesc>{cartItem.description}</ProductDesc>
+        <PriceProduct>${cartItem.price}</PriceProduct>
+        <h4>
+          <span>Quantity: {count} </span>
+        </h4>
+        <WrapperButton>
+          <ButtonCard
+            onClick={() => {
+              count++;
+              handleUpdate(cartItem);
+            }}
+          >
+            +
+          </ButtonCard>
+          <ButtonCard
+            onClick={() => {
+              if (cartItem.quantity > 0) {
+                count--;
+                handleUpdate(cartItem);
+              }
+            }}
+          >
+            -
+          </ButtonCard>
+        </WrapperButton>
+        <ButtonCard
+          onClick={() => {
+            handleDeleteProduct(cartItem);
+          }}
+          style={{ "margin-top": "10px" }}
+        >
+          Delete Product
+        </ButtonCard>
+      </ContainerDeatailCard>
     );
   };
- 
+
   const emptyCart = () => {
     return (
       <div className="px-4 my-5 bg-light rounded-3 py-5">
@@ -144,26 +195,26 @@ export  function Cart({ products, handleDeleted }) {
     );
   };
 
-  
-
   return (
     <>
-     <div className="container ">
+      <Navbar />
+      <div className="container ">
         <div className="d-lg-flex  justify-content-end">
-          {cartProducts.length !== 0 &&
-          <button onClick={() => {
-                 handleDelete(cartProducts);
-                }} 
-                className="btn btn-outline-primary my-5 "
-              >
+          {cartProducts.length !== 0 && (
+            <button
+              onClick={() => {
+                handleDelete(cartProducts);
+              }}
+              className="btn btn-outline-primary my-5 "
+            >
               Delete All The Products On Cart
             </button>
-          }
-          </div>
+          )}
         </div>
+      </div>
       {cartProducts.length === 0 && emptyCart()}
       {cartProducts.length !== 0 && cartProducts.map(cartItems)}
-      
+
       <div className="container py-4">
         <div className="row">
           <div className="d-lg-flex  justify-content-end">
@@ -174,22 +225,32 @@ export  function Cart({ products, handleDeleted }) {
       <div className="container py-4">
         <div className="row">
           <div className="d-grid col-6 d-md-flex justify-content-md-end">
-            {user ? (
+            {/* {user ? (
               <Link
                 onClick={() => {
-                  // handleCart(currentProduct)
+                  // handleCart(cartItem)
                   handlePostOrder();
                 }}
                 to="/checkout"
-                className="btn btn-outline-primary btn-lg"
               >
                 <span>Checkout</span>
               </Link>
             ) : (
-              <Alert variant="primary">
+              <Alert variant="primary" style={{ color: "red" }}>
                 To continue with your purchase, please Login.
               </Alert>
-            )}
+            )} */}
+            <ButtonCard>
+            <Link
+                onClick={() => {
+                  // handleCart(cartItem)
+                  handlePostOrder();
+                }}
+                to="/checkout"
+              >
+                <span>Checkout</span>
+              </Link>
+              </ButtonCard>
           </div>
         </div>
       </div>

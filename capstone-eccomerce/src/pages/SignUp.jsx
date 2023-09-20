@@ -1,42 +1,51 @@
-import {React, useState} from "react";
-import { useNavigate } from 'react-router'
+import { React, useState } from "react";
+import { useNavigate } from "react-router";
 import { Alert } from "react-bootstrap";
 
-export  function SignIn({onLogin}) {
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
-  const [email, setEmail]= useState("");
+export function SignUp() {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
-  const [errors, setErrors] = useState([])
-  let navigate = useNavigate()
-  
+  const [errors, setErrors] = useState([]);
+  let navigate = useNavigate();
+
   function handleSubmit(e) {
     e.preventDefault();
-    fetch('https://fakestoreapi.com/users', {
+    fetch("https://fakestoreapi.com/users", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        first_name: firstName,
-        last_name: lastName,
-        username: username,
-        password,
-        password_confirmation: passwordConfirmation,
-        email,
+        email: email,
+        username: email,
+        password: password,
+        name: {
+          firstname: firstName,
+          lastname: lastName,
+        },
+        address: {
+          city: "kilcoole",
+          street: "7835 new road",
+          number: 3,
+          zipcode: "12926-3874",
+          geolocation: {
+            lat: "-37.3159",
+            long: "81.1496",
+          },
+        },
+        phone: "1-570-236-7033",
       }),
-    })
-      .then((r) => {
-        if(r.ok){
-          r.json() 
-          .then()
-          .then( navigate('/'))
-        }else {
-          r.json().then((err) => setErrors(err.errors))
-        }
-      })
+    }).then((r) => {
+      if (r.ok) {
+        r.json().then().then(navigate("/"));
+      } else {
+        r.json().then((err) => setErrors(err.errors));
+      }
+    });
   }
   return (
     <>
@@ -47,7 +56,7 @@ export  function SignIn({onLogin}) {
         data-bs-toggle="modal"
         data-bs-target="#signupModal"
       >
-       <span className="fa fa-user-plus me-1"></span> Register
+        <span className="fa fa-user-plus me-1"></span> Register
       </button>
 
       {/* <!-- Modal --> */}
@@ -62,7 +71,7 @@ export  function SignIn({onLogin}) {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="exampleModalLabel">
-              <span className="fa fa-sign-in me-1"></span> Register
+                <span className="fa fa-sign-in me-1"></span> Register
               </h5>
               <button
                 type="button"
@@ -72,20 +81,21 @@ export  function SignIn({onLogin}) {
               ></button>
             </div>
             <div className="modal-body">
-            <button className= "btn btn-outline-primary w-100 mb-4">
-             <span className="fa fa-google me-2"></span> Sign up With Google 
-            </button>
-            <form onSubmit={handleSubmit}>
-            <div className="mb-3">
+              <button className="btn btn-outline-primary w-100 mb-4">
+                <span className="fa fa-google me-2"></span> Sign up With Google
+              </button>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
                   <label htmlFor="first_name" className="form-label">
-                    First Name 
+                    First Name
                   </label>
                   <input
                     type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     className="form-control"
-                    id="firstName"/>
+                    id="firstName"
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="last_name" className="form-label">
@@ -96,7 +106,8 @@ export  function SignIn({onLogin}) {
                     onChange={(e) => setLastName(e.target.value)}
                     value={lastName}
                     className="form-control"
-                    id="lastName"/>
+                    id="lastName"
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
@@ -108,7 +119,7 @@ export  function SignIn({onLogin}) {
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                   />
+                  />
                 </div>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
@@ -140,7 +151,7 @@ export  function SignIn({onLogin}) {
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password_confirmation" className="form-label">
-                  Confirm Password
+                    Confirm Password
                   </label>
                   <input
                     type="password"
@@ -148,7 +159,6 @@ export  function SignIn({onLogin}) {
                     id="password_confirmation"
                     value={passwordConfirmation}
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
-
                   />
                 </div>
                 <div className="mb-3 form-check">
@@ -161,21 +171,24 @@ export  function SignIn({onLogin}) {
                     Check me out
                   </label>
                 </div>
-                <button type="submit" className="btn btn-outline-primary w-100 mt-5">
+                <button
+                  type="submit"
+                  className="btn btn-outline-primary w-100 mt-5"
+                >
                   Register
                 </button>
               </form>
             </div>
             <div>
-            {errors.map((error) => (
-              <Alert variant="primary" key={error}>
-               {error}
-              </Alert>
-            ))}
+              {errors.map((error) => (
+                <Alert variant="primary" key={error}>
+                  {error}
+                </Alert>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
