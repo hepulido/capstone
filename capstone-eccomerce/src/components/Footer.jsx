@@ -1,4 +1,3 @@
-// import BadgeIcon from '@mui/icons-material/Badge';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import SearchIcon from "@mui/icons-material/Search";
 import React from "react";
@@ -8,8 +7,6 @@ import { mobile } from "../responsive";
 
 const Container = styled.div`
   height: 60px;
-  margin-bottom: 80px;
-
   ${mobile({ height: "50px" })}
 `;
 
@@ -28,24 +25,24 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  ${mobile({ display: "none" })}
-`;
+// const Language = styled.span`
+//   font-size: 14px;
+//   cursor: pointer;
+//   ${mobile({ display: "none" })}
+// `;
 
-const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
-  display: flex;
-  align-items: center;
-  margin-left: 25px;
-  padding: 5px;
-`;
+// const SearchContainer = styled.div`
+//   border: 0.5px solid lightgray;
+//   display: flex;
+//   align-items: center;
+//   margin-left: 25px;
+//   padding: 5px;
+// `;
 
-const Input = styled.input`
-  border: none;
-  ${mobile({ width: "50px" })}
-`;
+// const Input = styled.input`
+//   border: none;
+//   ${mobile({ width: "50px" })}
+// `;
 
 const Center = styled.div`
   flex: 1;
@@ -73,16 +70,12 @@ const MenuItem = styled.div`
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
-export const Navbar = () => {
+export const Footer = () => {
   return (
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
-          <SearchContainer>
-            <Input placeholder="Search" />
-            <SearchIcon style={{ color: "gray", fontSize: 16 }} />
-          </SearchContainer>
+        <h3>&copy; CAPSTONE STORE, 2023. All rights reserved.</h3>
         </Left>
         <Center>
           <Link to="/" style={{ textDecoration: "none" }}>
@@ -91,17 +84,17 @@ export const Navbar = () => {
         </Center>
         <Right>
         <Link to="/about" style={{ textDecoration: "none" }}>
-          <MenuItem>ABOUT</MenuItem>
+          <MenuItem>About</MenuItem>
           </Link>
           <Link to="/LogIn" style={{ textDecoration: "none" }}>
-            <MenuItem>LOG IN</MenuItem>
+            <MenuItem>Instagram</MenuItem>
           </Link>
           <Link to="/SignIn" style={{ textDecoration: "none" }}>
-            <MenuItem>SIGN IN</MenuItem>
+            <MenuItem>twitter</MenuItem>
           </Link>
           <MenuItem>
             <Link to="/Cart" style={{ textDecoration: "none" }}>
-              <ShoppingCartIcon />
+              Facebook
             </Link>
           </MenuItem>
         </Right>

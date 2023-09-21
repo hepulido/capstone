@@ -1,5 +1,6 @@
 import React from "react";
 import { Navbar } from "../components/Navbar";
+import { Footer } from "../components/Footer";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
@@ -26,8 +27,6 @@ const CardTitle = styled.div`
   font-size: 18px;
 `;
 const ProductImage = styled.div`
-  /* width: 50px;
-height: 60px; */
 `;
 const PriceProduct = styled.div`
 font-size: 18px;
@@ -80,6 +79,7 @@ export const Home = ({ products, handleOnProduct }) => {
     <>
       <Navbar />
       <ContainerCard>{products.map(cardItem)}</ContainerCard>
+      <Footer />
     </>
   );
 };

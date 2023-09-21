@@ -12,6 +12,17 @@ const ContainerDeatailCard = styled.div`
   justify-content: center;
   padding: 16px;
 `;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+const ContainerEmpty = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const TitleDeatailCard = styled.div`
 max-width:750px
  font-size: 26px;
@@ -38,6 +49,28 @@ const ButtonCard = styled.div`
   padding: 0.25em 1em;
   border: 2px solid #00c3ff;
   border-radius: 3px;
+`;
+const ButtonQty = styled.div`
+  color: white;
+  background: #00c3ff;
+  font-weight: 500;
+  font-size: 1em;
+  margin: 0.5em 0.25em;
+  padding: 0.25em 1em;
+  border: 2px solid #00c3ff;
+  border-radius: 3px;
+`;
+const ButtonCheckout = styled.div`
+  color: white;
+  background: #00c3ff;
+  font-weight: 600;
+  font-size: 1.5em;
+  margin: 1em 0.25em;
+  padding: 0.25em 1em;
+  border: 2px solid #00c3ff;
+  border-radius: 3px;
+  width: fit-content;
+  align-items: center;
 `;
 export function Cart({ products, handleDeleted }) {
   const { cartProducts, setCartProducts } = useContext(CartContext);
@@ -100,14 +133,14 @@ export function Cart({ products, handleDeleted }) {
     setCartProducts(newCartProducts);
   };
 
-  let handleDelete = (products) => {
-    products.splice(0, products.length);
-    fetch("https://fakestoreapi.com/carts", {
-      method: "DELETE",
-    })
-      .then((res) => res.json())
-      .then(() => handleDeleted(products));
-  };
+  // let handleDelete = (products) => {
+  //   products.splice(0, products.length);
+  //   fetch("https://fakestoreapi.com/carts", {
+  //     method: "DELETE",
+  //   })
+  //     .then((res) => res.json())
+  //     .then(() => handleDeleted(products));
+  // };
 
   const newCartProducts = [...cartProducts];
   const handlePostOrder = async () => {
@@ -138,29 +171,28 @@ export function Cart({ products, handleDeleted }) {
         <TitleDeatailCard>
           <h1>{cartItem.title}</h1>
         </TitleDeatailCard>
-        <div>
           <img
             src={cartItem.image}
             alt={cartItem.title}
             width="250"
             height="300px"
           />
-        </div>
+       
         <ProductDesc>{cartItem.description}</ProductDesc>
         <PriceProduct>${cartItem.price}</PriceProduct>
         <h4>
           <span>Quantity: {count} </span>
         </h4>
         <WrapperButton>
-          <ButtonCard
+          <ButtonQty
             onClick={() => {
               count++;
               handleUpdate(cartItem);
             }}
           >
             +
-          </ButtonCard>
-          <ButtonCard
+          </ButtonQty>
+          <ButtonQty
             onClick={() => {
               if (cartItem.quantity > 0) {
                 count--;
@@ -169,13 +201,13 @@ export function Cart({ products, handleDeleted }) {
             }}
           >
             -
-          </ButtonCard>
+          </ButtonQty>
         </WrapperButton>
         <ButtonCard
           onClick={() => {
             handleDeleteProduct(cartItem);
           }}
-          style={{ "margin-top": "10px" }}
+          style={{ "marginTop": "10px" }}
         >
           Delete Product
         </ButtonCard>
@@ -185,46 +217,20 @@ export function Cart({ products, handleDeleted }) {
 
   const emptyCart = () => {
     return (
-      <div className="px-4 my-5 bg-light rounded-3 py-5">
-        <div className="container py-4">
-          <div className="row">
-            <h3> Your Cart is Empty</h3>
-          </div>
-        </div>
-      </div>
+     <ContainerEmpty>
+        <h3> Your Cart is Empty</h3>
+     </ContainerEmpty>
     );
   };
 
   return (
     <>
       <Navbar />
-      <div className="container ">
-        <div className="d-lg-flex  justify-content-end">
-          {cartProducts.length !== 0 && (
-            <button
-              onClick={() => {
-                handleDelete(cartProducts);
-              }}
-              className="btn btn-outline-primary my-5 "
-            >
-              Delete All The Products On Cart
-            </button>
-          )}
-        </div>
-      </div>
-      {cartProducts.length === 0 && emptyCart()}
+     {cartProducts.length === 0 && emptyCart()}
       {cartProducts.length !== 0 && cartProducts.map(cartItems)}
-
-      <div className="container py-4">
-        <div className="row">
-          <div className="d-lg-flex  justify-content-end">
-            {total !== 0 && <h2> Total: {total}</h2>}
-          </div>
-        </div>
-      </div>
-      <div className="container py-4">
-        <div className="row">
-          <div className="d-grid col-6 d-md-flex justify-content-md-end">
+       {total !== 0 && <h2> Total: {total}</h2>}
+        <Container>
+          
             {/* {user ? (
               <Link
                 onClick={() => {
@@ -240,20 +246,20 @@ export function Cart({ products, handleDeleted }) {
                 To continue with your purchase, please Login.
               </Alert>
             )} */}
-            <ButtonCard>
+            <ButtonCheckout>
             <Link
+            style={{ textDecoration: "none", color: "white"}}
                 onClick={() => {
                   // handleCart(cartItem)
                   handlePostOrder();
                 }}
                 to="/checkout"
               >
-                <span>Checkout</span>
+                Checkout
               </Link>
-              </ButtonCard>
-          </div>
-        </div>
-      </div>
+              </ButtonCheckout>
+              </Container>
+          
     </>
   );
 }

@@ -32,7 +32,7 @@ const ButtonCard = styled.div`
   color: white;
   background: #00c3ff;
   font-weight: 500;
-  font-size: 2em;
+  font-size: 1.5em;
   margin: 1em;
   padding: 0.25em 1em;
   border: 2px solid #00c3ff;
@@ -63,7 +63,7 @@ export function ProductDetail({ currentProduct }) {
     }).then((r) => {
       if (r.ok) {
         setCartProducts(newCartProducts);
-        navigate("/")
+        // navigate("/")
       } else {
         r.json().then((err) => console.error(err));
       }

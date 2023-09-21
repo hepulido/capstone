@@ -4,6 +4,8 @@ import { ProductDetail } from "./pages/ProductDetail";
 import { SignUp } from "./pages/SignUp";
 import { Cart } from "./pages/Cart";
 import { Checkout } from "./pages/Checkout";
+import { About } from "./pages/About";
+import { PaymentComplete } from "./pages/PaymentComplete";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { LogIn } from "./pages/LogIn";
@@ -23,7 +25,6 @@ function App() {
         setProducts([...productsArr]);
       });
   }, []);
-console.log(products)
   let deleteProductCart = (productId) => {
     let deleted = cartProducts.filter((product) => product.id !== productId);
     setCartProducts(deleted);
@@ -69,6 +70,20 @@ console.log(products)
                 products={products}
                 currentProduct={currentProduct}
               />
+            }
+          />
+          <Route
+            exact
+            path="/paymentcomplete"
+            element={
+              <PaymentComplete />
+            }
+          />
+          <Route
+            exact
+            path="/about"
+            element={
+              <About/>
             }
           />
         </Routes>

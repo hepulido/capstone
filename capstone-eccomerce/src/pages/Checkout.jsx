@@ -1,62 +1,77 @@
-import { React, useEffect, useContext } from "react";
+import { React, useContext } from "react";
 import { Navbar } from "../components/Navbar";
-
-// import { Elements } from "@stripe/react-stripe-js";
+import { CheckoutForm } from "./CheckoutForm";
+import styled from "styled-components";
 import { CartContext } from "../CartContext";
-// import CheckoutForm from "./CheckoutForm";
 
-
-// const stripePromise = loadStripe("pk_test_51Ll5J2JOYhL55ByMxw2Kx5Qs060kJbKWmDE6H0k8x4TmYo63lSgGp4MMQIklXHuTco9rOoKc4yhVYbaWvPa0znf90093Ye30K3");
-
+const LastContainer = styled.div`
+  margin: 1rem 1rem;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  flex-grow: 1;
+`;
+const ContainerCard = styled.div`
+  margin: 1rem 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  flex-grow: 1;
+`;
+const CardBody = styled.div`
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  border: 1px solid #00c3ff;
+  border-radius: 10px;
+`;
+const CardTitle = styled.div`
+  max-width: 250px;
+  font-size: 18px;
+`;
+const ProductImage = styled.div``;
+const PriceProduct = styled.div`
+  font-size: 18px;
+  margin: 6px 6px;
+  font-weight: 700;
+`;
 export function Checkout() {
   const { cartProducts } = useContext(CartContext);
-  const total = cartProducts.reduce(function (acc, obj) { return acc + obj.price; }, 0);
-  
-  useEffect(() => {
-    fetch('/create-checkout-session', {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    
-      body: JSON.stringify(
-       {total: total}
-      ),
-    })
-      .then((r) => {
-        if(r.ok){
-          r.json() 
-          .then(() => {
-           
-          })
-        }else {
-          r.json().then((err) => console.error(err))
-        }
-      })
-     
-    }, []);
-  
-  
-  const productDisplay = (cartItem,i) => (
-    <section>
-      <div key={i} className="product">
-        <img src={cartItem.image} alt={cartItem.title} height="300px" />
-        <div className="description">
-          <h3>{cartItem.title}</h3>
-          <h5>{cartItem.price}</h5>
-        </div>
-      </div>
-    </section>
-  );
+  const total = cartProducts.reduce(function (acc, obj) {
+    return acc + obj.price;
+  }, 0);
 
- 
+  const productDisplay = (cartItem, i) => {
+    return (
+      <ContainerCard key={i}>
+        <CardBody>
+          <CardTitle>
+            <h5>{cartItem.title}</h5>
+          </CardTitle>
+          <ProductImage>
+            <img
+              src={cartItem.image}
+              style={{ width: "100px", height: "120px" }}
+              alt={cartItem.title}
+            />
+          </ProductImage>
+          <PriceProduct className="lead">${cartItem.price}</PriceProduct>
+        </CardBody>
+      </ContainerCard>
+    );
+  };
+
   return (
     <>
-    <Navbar/>
-    {cartProducts.map(productDisplay)}
-    <div>
-        {total !== 0 && <h2> Total: {total}</h2>}
-    </div>
-  </>
+      <Navbar />
+      <LastContainer>{cartProducts.map(productDisplay)}</LastContainer>
+      {total !== 0 && <h2> Total: {total}</h2>}
+      <CheckoutForm />
+    </>
   );
 }
