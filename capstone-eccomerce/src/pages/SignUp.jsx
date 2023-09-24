@@ -1,7 +1,47 @@
-import { React, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { Alert } from "react-bootstrap";
+import styled from "styled-components";
 import { Navbar } from "../components/Navbar";
+
+const StyledButton = styled.button`
+  background: #00c3ff;
+  color: white;
+  font-size: 1em;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+`;
+
+const SearchInput = styled.input`
+  padding: 8px;
+  margin: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const LoginContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+`;
+
+const LoginCard = styled.div`
+  background-color: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  width: 300px;
+`;
+
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 export function SignUp() {
   const [firstName, setFirstName] = useState("");
@@ -40,100 +80,83 @@ export function SignUp() {
         },
         phone: "1-570-236-7033",
       }),
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then().then(navigate("/"));
-      } else {
-        r.json().then((err) => setErrors(err.errors));
-      }
-    });
+    })
+      .then((r) => {
+        if (r.ok) {
+          return r.json();
+        } else {
+          throw new Error("Registration failed.");
+        }
+      })
+      .then((res) => {
+        // Handle successful registration, e.g., set user context and navigate
+        navigate("/");
+      })
+      .catch((error) => {
+        setErrors([error.message]);
+      });
   }
+
   return (
     <>
-    <Navbar />
-      <button>
-        <span className="fa fa-google me-2"></span> Sign up With Google
-      </button>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="first_name">First Name</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            id="firstName"
-          />
-        </div>
-        <div>
-          <label htmlFor="last_name" className="form-label">
-            Last name
-          </label>
-          <input
-            type="text"
-            onChange={(e) => setLastName(e.target.value)}
-            value={lastName}
-            id="lastName"
-          />
-        </div>
-        <div>
-          <label htmlFor="username" className="form-label">
-            Username
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <div id="emailHelp">
-            We'll never share your email with anyone else.
-          </div>
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password_confirmation" className="form-label">
-            Confirm Password
-          </label>
-          <input
-            type="password"
-            id="password_confirmation"
-            value={passwordConfirmation}
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-          />
-        </div>
-        <div>
-          <input type="checkbox" id="exampleCheck1" />
-          <label htmlFor="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit">Register</button>
-      </form>
+      <Navbar />
+      <LoginContainer>
+        <LoginCard>
+          <h2>Sign Up</h2>
+          <LoginForm onSubmit={handleSubmit}>
+            <SearchInput
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder="First Name"
+            />
 
-      <div>
-        {errors.map((error) => (
-          <Alert variant="primary" key={error}>
-            {error}
-          </Alert>
-        ))}
-      </div>
+            <SearchInput
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder="Last Name"
+            />
+
+            <SearchInput
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username"
+            />
+
+            <SearchInput
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+            />
+
+            <SearchInput
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+            />
+
+            <SearchInput
+              type="password"
+              value={passwordConfirmation}
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              placeholder="Confirm Password"
+            />
+
+            <StyledButton type="submit">Register</StyledButton>
+          </LoginForm>
+        </LoginCard>
+        <div>
+          {errors.map((error) => (
+            <Alert variant="primary" key={error}>
+              {error}
+            </Alert>
+          ))}
+        </div>
+      </LoginContainer>
     </>
   );
 }

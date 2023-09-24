@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
-import { Footer } from "../components/Footer";
 
 export function About() {
   return (
@@ -20,21 +19,12 @@ export function About() {
               experience in the market, this company was created based on a
               Fullsctack Academy school project and ended up being a reality.
             </p>
-            <Link to="/contact" className="btn btn-outline-primary px-3">
+            <Link to="/" style={{ textDecoration: "none" }}>
               Contact Us
             </Link>
           </div>
-          <div className="col-md-6 d-flex justify-content-center">
-            <img
-              src="/assets/images/images/about.png"
-              alt="About Us"
-              height="500px"
-              width="650"
-            />
-          </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 }

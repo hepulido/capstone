@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Link } from "react-router-dom";
@@ -26,13 +26,24 @@ const CardTitle = styled.div`
   max-width: 250px;
   font-size: 18px;
 `;
-const ProductImage = styled.div`
-`;
+const ProductImage = styled.div``;
 const PriceProduct = styled.div`
-font-size: 18px;
-margin:6px 6px;
-font-weight: 700;
+  font-size: 18px;
+  margin: 6px 6px;
+  font-weight: 700;
 `;
+const ContainerSearch = styled.div`
+  margin: 1rem 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-grow: 1;
+`;
+const SearchTitle = styled.div`
+  font-size: 22px;
+  font-weight: 500;
+`;
+
 const ButtonCard = styled.div`
   background: #00c3ff;
   font-weight: 500;
@@ -42,7 +53,50 @@ const ButtonCard = styled.div`
   border: 2px solid #00c3ff;
   border-radius: 3px;
 `;
-export const Home = ({ products, handleOnProduct }) => {
+const StyledButton = styled.button`
+  background: #00c3ff;
+  color: white;
+  font-size: 1em;
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+`;
+
+const SearchInput = styled.input`
+  padding: 8px;
+  margin: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+export const Home = ({ products, setProducts, handleOnProduct }) => {
+  const [category, setCategory] = useState("");
+  const [searchErrors, setSearchErrors] = useState([]);
+  const fetchProducts = (category) => {
+    fetch(`https://fakestoreapi.com/products/category/${category}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Failed to fetch products.");
+        }
+      })
+      .then((data) => {
+        setProducts(data);
+      })
+      .catch((error) => {
+        setSearchErrors([error.message]);
+      });
+  };
+
+  useEffect(() => {
+    fetchProducts(category);
+  }, [category]);
+
+  const handleSearch = () => {
+    fetchProducts(category);
+  };
   const cardItem = (products) => {
     return (
       <ContainerCard key={products.id}>
@@ -59,16 +113,16 @@ export const Home = ({ products, handleOnProduct }) => {
           </ProductImage>
           <PriceProduct className="lead">${products.price}</PriceProduct>
           <ButtonCard>
-          <Link
-            style={{ textDecoration: "none", color: "white"}}
-            to={`/productDetail/${products.id}`}
-            onClick={() => {
-              handleOnProduct(products);
-            }}
-          >
-            {" "}
-            See Product Detail{" "}
-          </Link>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+              to={`/productDetail/${products.id}`}
+              onClick={() => {
+                handleOnProduct(products);
+              }}
+            >
+              {" "}
+              See Product Detail{" "}
+            </Link>
           </ButtonCard>
         </CardBody>
       </ContainerCard>
@@ -78,6 +132,17 @@ export const Home = ({ products, handleOnProduct }) => {
   return (
     <>
       <Navbar />
+      <ContainerSearch>
+        <SearchTitle htmlFor="category">Category:</SearchTitle>
+        <SearchInput
+          type="text"
+          id="category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          placeholder="Enter category"
+        />
+        <StyledButton onClick={handleSearch}>Search Products</StyledButton>
+      </ContainerSearch>
       <ContainerCard>{products.map(cardItem)}</ContainerCard>
       <Footer />
     </>

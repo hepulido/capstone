@@ -25,6 +25,14 @@ function App() {
         setProducts([...productsArr]);
       });
   }, []);
+  useEffect(() => {
+    fetch('https://fakestoreapi.com/users')
+      .then((res) => res.json())
+      .then((userArr) => {
+        console.log([userArr])
+      });
+  }, []);
+  console.log("users",user)
   let deleteProductCart = (productId) => {
     let deleted = cartProducts.filter((product) => product.id !== productId);
     setCartProducts(deleted);
@@ -41,7 +49,7 @@ function App() {
             exact
             path="/"
             element={
-              <Home products={products} handleOnProduct={handleOnProduct} />
+              <Home products={products} setProducts ={setProducts} handleOnProduct={handleOnProduct} />
             }
           />
           <Route
@@ -50,7 +58,7 @@ function App() {
             element={<ProductDetail currentProduct={currentProduct} />}
           />
           <Route exact path="/logIn" element={<LogIn user={user} />} />
-          <Route exact path="/signIn" element={<SignUp />} />
+          <Route exact path="/signIn" element={<SignUp setUser={setUser}/>} />
           <Route
             exact
             path="/cart"
