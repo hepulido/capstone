@@ -90,7 +90,7 @@ export const Footer = () => {
             <MenuItem>Instagram</MenuItem>
           </Link>
           <Link to="/SignIn" style={{ textDecoration: "none" }}>
-            <MenuItem>twitter</MenuItem>
+            <MenuItem>Linkedin</MenuItem>
           </Link>
           <MenuItem>
             <Link to="/Cart" style={{ textDecoration: "none" }}>
