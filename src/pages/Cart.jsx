@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Alert } from "react-bootstrap";
 import { CartContext } from "../CartContext";
 import { Navbar } from "../components/Navbar";
 import styled from "styled-components";
@@ -74,11 +73,6 @@ const ButtonCheckout = styled.div`
 `;
 export function Cart({ products, handleDeleted }) {
   const { cartProducts, setCartProducts } = useContext(CartContext);
-  const { user } = useContext(CartContext);
-  const { cart } = useContext(CartContext);
-  const { currentUser, setCurrentUser } = useState(user);
-
-  // let { id } = user;
 
   useEffect(() => {
     fetch("https://fakestoreapi.com/carts/user").then((response) => {
@@ -133,15 +127,6 @@ export function Cart({ products, handleDeleted }) {
     setCartProducts(newCartProducts);
   };
 
-  // let handleDelete = (products) => {
-  //   products.splice(0, products.length);
-  //   fetch("https://fakestoreapi.com/carts", {
-  //     method: "DELETE",
-  //   })
-  //     .then((res) => res.json())
-  //     .then(() => handleDeleted(products));
-  // };
-
   const newCartProducts = [...cartProducts];
   const handlePostOrder = async () => {
     await fetch("/orders", {
@@ -171,13 +156,13 @@ export function Cart({ products, handleDeleted }) {
         <TitleDeatailCard>
           <h1>{cartItem.title}</h1>
         </TitleDeatailCard>
-          <img
-            src={cartItem.image}
-            alt={cartItem.title}
-            width="250"
-            height="300px"
-          />
-       
+        <img
+          src={cartItem.image}
+          alt={cartItem.title}
+          width="250"
+          height="300px"
+        />
+
         <ProductDesc>{cartItem.description}</ProductDesc>
         <PriceProduct>${cartItem.price}</PriceProduct>
         <h4>
@@ -207,7 +192,7 @@ export function Cart({ products, handleDeleted }) {
           onClick={() => {
             handleDeleteProduct(cartItem);
           }}
-          style={{ "marginTop": "10px" }}
+          style={{ marginTop: "10px" }}
         >
           Delete Product
         </ButtonCard>
@@ -217,21 +202,20 @@ export function Cart({ products, handleDeleted }) {
 
   const emptyCart = () => {
     return (
-     <ContainerEmpty>
+      <ContainerEmpty>
         <h3> Your Cart is Empty</h3>
-     </ContainerEmpty>
+      </ContainerEmpty>
     );
   };
 
   return (
     <>
       <Navbar />
-     {cartProducts.length === 0 && emptyCart()}
+      {cartProducts.length === 0 && emptyCart()}
       {cartProducts.length !== 0 && cartProducts.map(cartItems)}
-       {total !== 0 && <h2> Total: {total}</h2>}
-        <Container>
-          
-            {/* {user ? (
+      {total !== 0 && <h2> Total: {total}</h2>}
+      <Container>
+        {/* {user ? (
               <Link
                 onClick={() => {
                   // handleCart(cartItem)
@@ -246,20 +230,19 @@ export function Cart({ products, handleDeleted }) {
                 To continue with your purchase, please Login.
               </Alert>
             )} */}
-            <ButtonCheckout>
-            <Link
-            style={{ textDecoration: "none", color: "white"}}
-                onClick={() => {
-                  // handleCart(cartItem)
-                  handlePostOrder();
-                }}
-                to="/checkout"
-              >
-                Checkout
-              </Link>
-              </ButtonCheckout>
-              </Container>
-          
+        <ButtonCheckout>
+          <Link
+            style={{ textDecoration: "none", color: "white" }}
+            onClick={() => {
+              // handleCart(cartItem)
+              handlePostOrder();
+            }}
+            to="/checkout"
+          >
+            Checkout
+          </Link>
+        </ButtonCheckout>
+      </Container>
     </>
   );
 }
