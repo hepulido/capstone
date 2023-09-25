@@ -1,8 +1,6 @@
-import { React, useState, useContext } from "react";
-import { useNavigate } from "react-router";
+import { React, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { Navbar } from "../components/Navbar";
-import { CartContext } from "../CartContext";
 import styled from "styled-components";
 
 const StyledButton = styled.button`
@@ -43,11 +41,9 @@ const LoginForm = styled.form`
   align-items: center;
 `;
 export function LogIn({ handleLogout }) {
-  const { setUser } = useContext(CartContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState([]);
-  let navigate = useNavigate();
+  const [errors] = useState([]);
 
   function handleSubmit(e) {
     e.preventDefault();

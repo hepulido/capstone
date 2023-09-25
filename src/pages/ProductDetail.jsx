@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
 import { Navbar } from "../components/Navbar";
 import { CartContext } from "../CartContext";
 import styled from "styled-components";
@@ -41,7 +40,6 @@ const ButtonCard = styled.div`
 export function ProductDetail({ currentProduct }) {
   const [cartBtn, setCartBtn] = useState("Add to Cart");
   const { cartProducts, setCartProducts } = useContext(CartContext);
-  let navigate = useNavigate();
 
   const handlePostCart = async (product) => {
     const newCartProducts = [...cartProducts, product];

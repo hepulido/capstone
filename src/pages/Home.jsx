@@ -72,7 +72,6 @@ const SearchInput = styled.input`
 `;
 export const Home = ({ products, setProducts, handleOnProduct }) => {
   const [category, setCategory] = useState("");
-  const [searchErrors, setSearchErrors] = useState([]);
   const fetchProducts = (category) => {
     fetch(`https://fakestoreapi.com/products/category/${category}`)
       .then((response) => {
@@ -86,12 +85,13 @@ export const Home = ({ products, setProducts, handleOnProduct }) => {
         setProducts(data);
       })
       .catch((error) => {
-        setSearchErrors([error.message]);
+        console.log([error.message]);
       });
   };
 
   useEffect(() => {
     fetchProducts(category);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
   const handleSearch = () => {
