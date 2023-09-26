@@ -17,7 +17,7 @@ function App() {
   const [cartProducts, setCartProducts] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
-
+ 
   useEffect(() => {
     fetch('https://fakestoreapi.com/products')
       .then((res) => res.json())

@@ -149,8 +149,8 @@ export function Cart({ products, handleDeleted }) {
     return acc + obj.price;
   }, 0);
 
-  let count = 0;
   const cartItems = (cartItem, i) => {
+    let count = cartItem.quantity || 0;
     return (
       <ContainerDeatailCard key={i}>
         <TitleDeatailCard>
@@ -172,7 +172,7 @@ export function Cart({ products, handleDeleted }) {
           <ButtonQty
             onClick={() => {
               count++;
-              handleUpdate(cartItem);
+              handleUpdate({ ...cartItem, quantity: count });
             }}
           >
             +
@@ -181,7 +181,7 @@ export function Cart({ products, handleDeleted }) {
             onClick={() => {
               if (cartItem.quantity > 0) {
                 count--;
-                handleUpdate(cartItem);
+                handleUpdate({ ...cartItem, quantity: count });
               }
             }}
           >

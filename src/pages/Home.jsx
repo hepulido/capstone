@@ -90,7 +90,24 @@ export const Home = ({ products, setProducts, handleOnProduct }) => {
   };
 
   useEffect(() => {
-    fetchProducts(category);
+    if (category === "") {
+      fetch("https://fakestoreapi.com/products")
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to fetch products.");
+          }
+        })
+        .then((data) => {
+          setProducts(data);
+        })
+        .catch((error) => {
+          console.log([error.message]);
+        });
+    } else {
+      fetchProducts(category);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category]);
 
