@@ -17,25 +17,27 @@ function App() {
   const [cartProducts, setCartProducts] = useState([]);
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
- 
+
   useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
+    fetch("https://fakestoreapi.com/products")
       .then((res) => res.json())
       .then((productsArr) => {
         setProducts([...productsArr]);
       });
   }, []);
   useEffect(() => {
-    fetch('https://fakestoreapi.com/users')
+    fetch("https://fakestoreapi.com/users")
       .then((res) => res.json())
       .then((userArr) => {
-        console.log([userArr])
+        console.log([userArr]);
       });
   }, []);
-  console.log("users",user)
   let deleteProductCart = (productId) => {
     let deleted = cartProducts.filter((product) => product.id !== productId);
     setCartProducts(deleted);
+  };
+  const handleLogout = () => {
+    setUser(null);
   };
 
   const handleOnProduct = (product) => setCurrentProduct({ ...product });
@@ -49,7 +51,13 @@ function App() {
             exact
             path="/"
             element={
-              <Home products={products} setProducts ={setProducts} handleOnProduct={handleOnProduct} />
+              <Home
+                products={products}
+                setProducts={setProducts}
+                user={user}
+                handleOnProduct={handleOnProduct}
+                handleLogout={handleLogout}
+              />
             }
           />
           <Route
@@ -57,8 +65,8 @@ function App() {
             path="/productDetail/:id"
             element={<ProductDetail currentProduct={currentProduct} />}
           />
-          <Route exact path="/logIn" element={<LogIn user={user} />} />
-          <Route exact path="/signIn" element={<SignUp setUser={setUser}/>} />
+          <Route exact path="/logIn" element={<LogIn setUser={setUser} />} />
+          <Route exact path="/signIn" element={<SignUp setUser={setUser} />} />
           <Route
             exact
             path="/cart"
@@ -74,26 +82,11 @@ function App() {
             exact
             path="/checkout"
             element={
-              <Checkout
-                products={products}
-                currentProduct={currentProduct}
-              />
+              <Checkout products={products} currentProduct={currentProduct} />
             }
           />
-          <Route
-            exact
-            path="/paymentcomplete"
-            element={
-              <PaymentComplete />
-            }
-          />
-          <Route
-            exact
-            path="/about"
-            element={
-              <About/>
-            }
-          />
+          <Route exact path="/paymentcomplete" element={<PaymentComplete />} />
+          <Route exact path="/about" element={<About />} />
         </Routes>
       </CartContext.Provider>
     </div>

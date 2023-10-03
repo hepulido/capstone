@@ -2,6 +2,8 @@ import { React, useState } from "react";
 import { Alert } from "react-bootstrap";
 import { Navbar } from "../components/Navbar";
 import styled from "styled-components";
+import { useNavigate } from "react-router";
+
 
 const StyledButton = styled.button`
   background: #00c3ff;
@@ -40,24 +42,38 @@ const LoginForm = styled.form`
   flex-direction: column;
   align-items: center;
 `;
-export function LogIn({ handleLogout }) {
+export function LogIn({setUser}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors] = useState([]);
+  const [errors, setErrors] = useState([]);
+  let navigate = useNavigate();
 
-  function handleSubmit(e) {
+  const  handleSubmit = async (e) => {
     e.preventDefault();
-    fetch("https://fakestoreapi.com/auth/login", {
+    try {
+    const response = await fetch("https://fakestoreapi.com/auth/login", {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         username: email,
         password: password
       }),
-    })   
-    .then(res=>res.json())
-    .then(json=>console.log(json))
+    })  
+    const responseData = await response.json(); 
+    if (response.ok) {
+      const token = responseData.token; 
+      setEmail('');
+      setPassword('');
+      setErrors([]);
+      setUser(token)
+      navigate("/");
+   } } catch (error) {
+    console.error("Login Error:", error);
   }
-
+    }
+  
   return (
     <>
       <Navbar />
@@ -89,7 +105,7 @@ export function LogIn({ handleLogout }) {
       <div>
         {errors.map((error) => (
           <Alert variant="primary" key={error}>
-            {error}
+            {errors}
           </Alert>
         ))}
       </div>

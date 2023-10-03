@@ -44,7 +44,7 @@ const MenuItem = styled.div`
   margin-left: 25px;
   ${mobile({ fontSize: "12px", marginLeft: "10px" })}
 `;
-export const Navbar = () => {
+export const Navbar = ({ user, handleLogout }) => {
   return (
     <Container>
       <Wrapper>
@@ -57,12 +57,18 @@ export const Navbar = () => {
           <Link to="/about" style={{ textDecoration: "none" }}>
             <MenuItem>ABOUT</MenuItem>
           </Link>
-          <Link to="/LogIn" style={{ textDecoration: "none" }}>
-            <MenuItem>LOG IN</MenuItem>
-          </Link>
-          <Link to="/SignIn" style={{ textDecoration: "none" }}>
-            <MenuItem>SIGN IN</MenuItem>
-          </Link>
+          {!user && (
+            <Link to="/SignIn" style={{ textDecoration: "none" }}>
+              <MenuItem>SIGN IN</MenuItem>
+            </Link>
+          )}
+          {!user && (
+            <Link to="/LogIn" style={{ textDecoration: "none" }}>
+              <MenuItem>LOG IN</MenuItem>
+            </Link>
+          )}
+
+          {user && <MenuItem onClick={handleLogout}>LOGOUT</MenuItem>}
           <MenuItem>
             <Link to="/Cart" style={{ textDecoration: "none" }}>
               <ShoppingCartIcon />

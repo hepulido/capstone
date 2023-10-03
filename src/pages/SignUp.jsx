@@ -43,7 +43,7 @@ const LoginForm = styled.form`
   align-items: center;
 `;
 
-export function SignUp() {
+export function SignUp({setToken} ) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");

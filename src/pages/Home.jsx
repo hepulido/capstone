@@ -70,7 +70,7 @@ const SearchInput = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
-export const Home = ({ products, setProducts, handleOnProduct }) => {
+export const Home = ({ products, setProducts, handleOnProduct,user, handleLogout }) => {
   const [category, setCategory] = useState("");
   const fetchProducts = (category) => {
     fetch(`https://fakestoreapi.com/products/category/${category}`)
@@ -148,7 +148,7 @@ export const Home = ({ products, setProducts, handleOnProduct }) => {
 
   return (
     <>
-      <Navbar />
+      <Navbar user={user} handleLogout={handleLogout}/>
       <ContainerSearch>
         <SearchTitle htmlFor="category">Category:</SearchTitle>
         <SearchInput
